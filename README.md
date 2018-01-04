@@ -1,6 +1,6 @@
 # JigSaw
 
-JigSaw is a Chrom/FireFox webextension that destroys productivity
+JigSaw is a Chrome/FireFox webextension that destroys productivity
 by allowing you to convert an image into a jigsaw puzzle.
 
 ## To use JigSaw:
@@ -13,6 +13,12 @@ puzzle.
 
 * Once you have entered JigSaw, you can always enter a new URL in the 
   input bar and submit.
+
+* Simple drag and drop use
+
+* Pieces stick to each other when they match correctly anywhere on the screen
+
+* Useful visual indicator when a piece is placed in the correct location
 
 * Ability to choose degree of difficulty (3x3 to 9x9 puzzle sizes)
 
