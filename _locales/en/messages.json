@@ -1,0 +1,18 @@
+{
+     "extensionName" : {
+       "message"     : "JigSaw",
+       "description" : "English name of the JigSaw extension"
+     },
+                     
+     "extensionDescription" : {
+       "message"     : "Convert image to a JigSaw puzzle",
+       "description" : "English description of the JigSaw extension"
+     },
+
+  "extensionRunJigSawFromContextMenu" : {
+    "message"     : "JigSawize!",
+    "description" : "English description for running JigSaw from right click context menu"
+  }
+  
+}
+  

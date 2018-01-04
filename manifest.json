@@ -1,0 +1,34 @@
+{
+
+    "manifest_version": 2,
+    "name": "__MSG_extensionName__",
+    "version": "1.0",
+
+    "description": "__MSG_extensionDescription__",
+    "homepage_url": "https://www.github.com/ushnisha/jigsaw/",
+
+    "icons": {
+        "128": "icons/jigsaw-128.png",
+        "64": "icons/jigsaw-64.png",
+        "32": "icons/jigsaw-32.png"
+    },
+
+    "permissions": [
+        "<all_urls>",
+        "activeTab",
+        "contextMenus"
+    ],
+
+    "web_accessible_resources": [
+        "css/jigsaw.css",
+        "icons/*.png"
+    ],
+
+    "background": {
+      "scripts": ["background/jigsaw_bg_common_functions.js",
+                  "background/jigsaw_bg_context_menu.js"]
+    },
+      
+    "default_locale": "en"  
+
+}
