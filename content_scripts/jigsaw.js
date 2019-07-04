@@ -2,7 +2,7 @@
 /*
  *  JigSaw is html/javascript code that creates a jigsaw from a link.
  *  It assumes that the user has provided a valid link to an image file.
- *  Copyright (C) 2015 Arun Kunchithapatham
+ *  Copyright (C) 2015-2019 Arun Kunchithapatham
  *
  *  This file is part of JigSaw.
  *
@@ -317,6 +317,7 @@ function Piece(id, row, col, height, width, img, correctTop, correctLeft, imgH, 
     this.inPosition = false;
     this.neighborPieces = new Array();
     this.attachedPieces = new Array();
+    this.moved = false;
         
     this.x1 = 0; this.y1 = 0;
     this.x2 = this.x1 + this.origWidth; this.y2 = 0;
@@ -612,12 +613,20 @@ function onMouseDown(e) {
 function onMouseUp(e) {
     piece = JigSaw.selectedPiece;
     if (piece !== null) {
+
         canvas = piece.canvas;
         JigSaw.selectedPiece = null;
         canvas.style.setProperty('border', 'none');
+
+        // if user clicks on a piece but does not move it; do nothing else
+        if (!piece.moved) {
+            return;
+        }
+
         let xpos = e.pageY - piece.height/2.0;
         let ypos = e.pageX - piece.width/2.0;
         piece.placeAt(xpos, ypos);
+        piece.moved = false;
         JigSaw.updateConnections(piece, xpos, ypos);
         let solved = JigSaw.checkSolved();
         if (solved) {
@@ -630,6 +639,7 @@ function onMouseUp(e) {
 function onMouseMove(e) {
     if (JigSaw.selectedPiece !== null) {
         piece = JigSaw.selectedPiece;
+        piece.moved = true;
         let dy = e.pageY - piece.currentTop - piece.height/2.0;
         let dx = e.pageX - piece.currentLeft - piece.width/2.0;
         piece.attachedPieces.forEach( function (p, idx, array) {
