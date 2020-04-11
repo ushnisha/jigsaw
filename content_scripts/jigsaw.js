@@ -2,7 +2,7 @@
 /*
  *  JigSaw is html/javascript code that creates a jigsaw from a link.
  *  It assumes that the user has provided a valid link to an image file.
- *  Copyright (C) 2015-2019 Arun Kunchithapatham
+ *  Copyright (C) 2015-2020 Arun Kunchithapatham
  *
  *  This file is part of JigSaw.
  *
@@ -33,6 +33,8 @@ var JigSaw = {
     width: null,
     height: null,
     numGrids: 5,
+    minGridSize: 3,
+    maxGridSize: 10,
     offset: 50,
     frameDiv: null,
     previewWidth: 100,
@@ -61,6 +63,7 @@ var JigSaw = {
             message.innerText = "Please wait while image is loading...";
             JigSaw.base_div.appendChild(message);
             message.style.zIndex = 99999999;
+            JigSaw.base_div.appendChild(message);
             
             
             // Set the number of grids per row/column
@@ -128,20 +131,19 @@ var JigSaw = {
 
         JigSaw.height = imgH;
         JigSaw.width = imgW;
-        
-        if (imgH >= imgW) {
-            if (imgH > JigSaw.maxHeight) {
-                JigSaw.height = JigSaw.maxHeight;
-                JigSaw.width = Math.round(JigSaw.height / ratio);
-            }
+
+        JigSaw.maxHeight = window.innerHeight - JigSaw.offset * 2;
+        JigSaw.maxWidth = window.innerWidth - JigSaw.offset * 3 - JigSaw.previewWidth;
+
+        if (JigSaw.height > JigSaw.maxHeight) {
+            JigSaw.height = JigSaw.maxHeight;
+            JigSaw.width = Math.round(JigSaw.height / ratio);
         }
-        else {
-            if (imgW > JigSaw.maxWidth) {
-                JigSaw.width = JigSaw.maxWidth;
-                JigSaw.height = Math.round(JigSaw.width * ratio);
-            }
+        if (JigSaw.width > JigSaw.maxWidth) {
+            JigSaw.width = JigSaw.maxWidth;
+            JigSaw.height = Math.round(JigSaw.width * ratio);
         }
-        
+
         JigSaw.frameDiv = document.createElement('div');
         JigSaw.frameDiv.setAttribute("style", "position:absolute;border:blue 2px solid;");
         JigSaw.frameDiv.style.setProperty("width", JigSaw.width + "px");
@@ -653,7 +655,7 @@ function jigsawize(request, sender, sendResponse) {
     if (request.jigsaw_action === 'loadJigSaw') {
         console.log("Called to load JigSaw at: " + new Date());
         thisURL = request.jigsaw_url;
-        loadJigSaw();
+        getJigSawSizeAndLoad();
         return Promise.resolve({response: "Completed Loading JigSaw"});
     }
     else {
@@ -661,10 +663,25 @@ function jigsawize(request, sender, sendResponse) {
     }
 }
 
-function loadJigSaw() {
+
+function getJigSawSizeAndLoad() {
+    // Update numGrids from the option setting
+    //
+    let onGetting = function(result) {
+        if (browser.runtime.lastError) {
+            console.log(browser.runtime.lastError);
+        }
+        else {
+            let jigsaw_default_size = parseInt(result.jigsaw_default_size);
+            loadJigSaw(jigsaw_default_size);
+        }
+    };
+    let gettings = browser.storage.local.get("jigsaw_default_size", onGetting);
+}
+
+function loadJigSaw(jigsaw_default_size) {
 
     if (document.getElementById('jigsaw_base') == null) {
-
 
         // Delete all elements of the page!
         while (document.body.lastChild != null) {
@@ -683,13 +700,19 @@ function loadJigSaw() {
         let jigsaw_select = document.createElement('select');
         jigsaw_select.setAttribute('id', 'jigsaw_select');
 
-        for (let i = 3; i < 10; i++) {
+        let selectedIdx = 0;
+        let idx = 0;
+        for (let i = JigSaw.minGridSize; i <= JigSaw.maxGridSize; i++) {
             let opt = document.createElement('option');
             opt.value = i;
+            if (i == jigsaw_default_size) {
+                selectedIdx = idx;
+            }
             opt.textContent = i + "x" + i;
             jigsaw_select.appendChild(opt);
+            idx += 1;
         }
-        jigsaw_select.selectedIndex = 2;
+        jigsaw_select.selectedIndex = selectedIdx;
 
         jigsaw_base.appendChild(jigsaw_select);
 

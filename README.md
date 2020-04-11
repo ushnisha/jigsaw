@@ -20,12 +20,15 @@ puzzle.
 
 * Useful visual indicator when a piece is placed in the correct location
 
-* Ability to choose degree of difficulty (3x3 to 9x9 puzzle sizes)
+* Ability to choose degree of difficulty (3x3 to 10x10 puzzle sizes)
+
+* Customize default degree of difficult via options page
+
 
 ## License & Copyright:
 
 JigSaw is provided under AGPLv3 license.
-Copyright (C) 2017-2019 Arun Kunchithapatham
+Copyright (C) 2017-2020 Arun Kunchithapatham
 
 ## Feedback:
 

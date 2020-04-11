@@ -2,7 +2,7 @@
 
     "manifest_version": 2,
     "name": "__MSG_extensionName__",
-    "version": "1.1",
+    "version": "1.2",
 
     "description": "__MSG_extensionDescription__",
     "homepage_url": "https://www.github.com/ushnisha/jigsaw/",
@@ -23,6 +23,7 @@
     "permissions": [
         "<all_urls>",
         "activeTab",
+        "storage",
         "contextMenus"
     ],
 
@@ -30,6 +31,11 @@
         "css/jigsaw.css",
         "icons/*.png"
     ],
+
+    "options_ui": {
+        "page": "options/jigsaw_options.html",
+        "open_in_tab": false
+    },
 
     "background": {
       "scripts": ["background/jigsaw_bg_common_functions.js",

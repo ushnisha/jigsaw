@@ -2,7 +2,7 @@
 /*
  *  JigSaw is html/javascript code that creates a jigsaw from a link.
  *  It assumes that the user has provided a valid link to an image file.
- *  Copyright (C) 2017-2019 Arun Kunchithapatham
+ *  Copyright (C) 2017-2020 Arun Kunchithapatham
  *
  *  This file is part of JigSaw.
  *

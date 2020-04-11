@@ -1,3 +1,14 @@
+## Version 1.2:
+
+* Allow users to customize the default NxN grid size
+  for the jigsaw puzzle
+
+* Bug fix in calculating the size of the jigsaw frame
+  In some corner cases, frame size was too small or
+  too large.
+
+------------------------------
+
 ## Version 1.1:
 
 * Minor bug fix; when a piece is clicked on but not moved,

@@ -1,0 +1,58 @@
+<!--
+ **********************************************************************
+ * JigSaw - A Firefox Webextension that creates a jigsaw puzzle from
+ * an image link
+ **********************************************************************
+
+   Copyright (c) 2017-2020 Arun Kunchithapatham
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+   Contributors:
+   Arun Kunchithapatham - Initial Contribution
+ ***********************************************************************
+ *
+ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="jigsaw_options.css"/>
+  </head>
+
+  <body>
+    <div class="jigsaw_options_panel"> 
+
+        <h2>Select Jigsaw Size:</h2>
+        <div class="jigsaw_options_section">
+            <div class="jigsaw_options_row">
+                <label for="jigsaw_default_size">Jigsaw Default Size:</label>
+                <select id="jigsaw_default_size" class="icon">
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+    
+    <script src="jigsaw_options.js"></script>
+  </body>
+
+</html>

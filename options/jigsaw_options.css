@@ -1,0 +1,48 @@
+/**
+ **********************************************************************
+ * JigSaw - A Firefox Webextension that creates a jigsaw puzzle from
+ * an image link
+ **********************************************************************
+
+   Copyright (c) 2017-2020 Arun Kunchithapatham
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+   Contributors:
+   Arun Kunchithapatham - Initial Contribution
+ ***********************************************************************
+ *
+ */
+
+.jigsaw_options_section {
+  padding: 10px;
+  text-align: center;
+  font-size: 1em;
+  background-color: #F0F8FF;
+  cursor: pointer;
+}
+
+.jigsaw_options_row {
+  padding: 4px;
+  text-align: center;
+  font-size: 1em;
+  background-color: #F0F8FF;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+
+.jigsaw_options_row:hover {
+  background-color: #B0C4DE;
+}
