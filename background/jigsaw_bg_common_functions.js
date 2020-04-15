@@ -57,3 +57,45 @@ function loadLinkAndRunJigSaw(thisURL) {
         loadJigSaw(active_tab.id, thisURL);
     });
 }
+
+function initializeOption(opt_name, opt_value) {
+
+    console.log(opt_name + ": " + opt_value);
+
+    let onGettingSuccess = function(result) {
+        if (browser.runtime.lastError) {
+            console.log(browser.runtime.lastError);
+        }
+        else {
+            if (Object.keys(result).length == 0) {
+                let onSetting = function() {
+                    if (browser.runtime.lastError) {
+                        console.log(browser.runtime.lastError);
+                    }
+                }
+                console.log({[opt_name] : opt_value});
+                let setting = browser.storage.local.set({ [opt_name] : opt_value }, onSetting);
+            }
+        }
+    }
+
+    // Try to get an option; if it has not been set ever,
+    // then try setting the option in the onGettingSuccess function
+    let getting = browser.storage.local.get(opt_name, onGettingSuccess);
+}
+
+function handleInstalled(details) {
+
+    let options_list = {jigsaw_default_size: "5",
+                        jigsaw_show_preview_image: true};
+
+    let option_keys = Object.keys(options_list);
+
+    for (let opt=0; opt < option_keys.length; opt++) {
+        let opt_name = option_keys[opt];
+        let opt_value = options_list[opt_name];
+        initializeOption(opt_name, opt_value);
+    }
+}
+
+browser.runtime.onInstalled.addListener(handleInstalled);

@@ -33,7 +33,8 @@ function saveOptions(e) {
     e.preventDefault();
 
     let current_settings = {
-        jigsaw_default_size: document.getElementById("jigsaw_default_size").value
+        jigsaw_default_size: document.getElementById("jigsaw_default_size").value,
+        jigsaw_show_preview_image: document.getElementById("jigsaw_show_preview_image").checked
     };
 
     console.log(current_settings);
@@ -42,7 +43,7 @@ function saveOptions(e) {
 
 function restoreOptions() {
 
-    let options_list = ["jigsaw_default_size"];
+    let options_list = ["jigsaw_default_size", "jigsaw_show_preview_image"];
 
     for (let opt=0; opt < options_list.length; opt++) {
 
@@ -58,7 +59,18 @@ function restoreOptions() {
                     let opt_name = keys[k];
                     let elem_name = opt_name;
                     if (opt_name == "jigsaw_default_size") {
-                        document.getElementById(elem_name).value = result.jigsaw_default_size;
+                        let idx = 0;
+                        let selOpts = document.getElementById(elem_name);
+                        for (let opt = 0; opt < selOpts.length; opt++) {
+                            if (selOpts[opt].value == result.jigsaw_default_size) {
+                                idx = opt;
+                                break;
+                            }
+                        }
+                        selOpts.selectedIndex = idx;
+                    }
+                    else if (opt_name == "jigsaw_show_preview_image") {
+                        document.getElementById(elem_name).checked = result.jigsaw_show_preview_image;
                     }
                 }
             }
@@ -70,3 +82,4 @@ function restoreOptions() {
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
 document.getElementById("jigsaw_default_size").addEventListener("change", saveOptions);
+document.getElementById("jigsaw_show_preview_image").addEventListener("change", saveOptions);

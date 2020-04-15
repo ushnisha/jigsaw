@@ -38,6 +38,7 @@ var JigSaw = {
     offset: 50,
     frameDiv: null,
     previewWidth: 100,
+    showPreviewImage: true,
     maxZIndex: 100,
     numBlink: 8,
     loading: false,
@@ -162,8 +163,12 @@ var JigSaw = {
         previewImage.style.setProperty("height", Math.round(JigSaw.previewWidth * JigSaw.height/JigSaw.width) + "px");
         previewImage.style.setProperty("top", JigSaw.offset + "px");
         previewImage.style.setProperty("left", JigSaw.offset + "px");
+        previewImage.style.setProperty("visibility", 'visible');
         JigSaw.base_div.appendChild(previewImage);
-        
+        if (!JigSaw.showPreviewImage) {
+            previewImage.style.setProperty("visibility",'hidden');
+        }
+
     },
     
     // Create a piece; scale it to fit the frameDiv if it is larger than the frameDiv
@@ -293,6 +298,20 @@ var JigSaw = {
             }
         }
         return solved;
+    },
+
+
+    toggle_preview_image: function() {
+        let jigsaw_preview_image = document.getElementById('jigsaw_previewImage');
+        if (jigsaw_preview_image != undefined) {
+            JigSaw.showPreviewImage = !JigSaw.showPreviewImage;
+            if (jigsaw_preview_image.style.visibility == 'hidden') {
+                jigsaw_preview_image.style.visibility = 'visible';
+            }
+            else if (jigsaw_preview_image.style.visibility == 'visible') {
+                jigsaw_preview_image.style.visibility = 'hidden';
+            }
+        }
     }
     
 };
@@ -659,7 +678,7 @@ function jigsawize(request, sender, sendResponse) {
         return Promise.resolve({response: "Completed Loading JigSaw"});
     }
     else {
-        console.log("Meassage not implemented: " + request.jigsaw_action);
+        console.log("Message not implemented: " + request.jigsaw_action);
     }
 }
 
@@ -672,11 +691,13 @@ function getJigSawSizeAndLoad() {
             console.log(browser.runtime.lastError);
         }
         else {
+            console.log(result);
             let jigsaw_default_size = parseInt(result.jigsaw_default_size);
+            JigSaw.showPreviewImage = result.jigsaw_show_preview_image;
             loadJigSaw(jigsaw_default_size);
         }
     };
-    let gettings = browser.storage.local.get("jigsaw_default_size", onGetting);
+    let gettings = browser.storage.local.get(["jigsaw_default_size", "jigsaw_show_preview_image"], onGetting);
 }
 
 function loadJigSaw(jigsaw_default_size) {
@@ -695,10 +716,19 @@ function loadJigSaw(jigsaw_default_size) {
         jigsaw_base.setAttribute('class', 'jigsaw_base');
         document.body.appendChild(jigsaw_base);
 
+        // Create a div to hold the controls
+        let jigsaw_controls = document.createElement('div');
+        jigsaw_controls.setAttribute('id', 'jigsaw_controls');
+        jigsaw_controls.setAttribute('class', 'jigsaw_controls');
+        jigsaw_base.appendChild(jigsaw_controls);
+
+
         // Create SELECT option for jigsaw size
         //
         let jigsaw_select = document.createElement('select');
         jigsaw_select.setAttribute('id', 'jigsaw_select');
+        jigsaw_select.setAttribute('class', 'jigsaw_control_item');
+        jigsaw_select.setAttribute('title', 'Select JigSaw Grid Size');
 
         let selectedIdx = 0;
         let idx = 0;
@@ -714,24 +744,38 @@ function loadJigSaw(jigsaw_default_size) {
         }
         jigsaw_select.selectedIndex = selectedIdx;
 
-        jigsaw_base.appendChild(jigsaw_select);
+        jigsaw_controls.appendChild(jigsaw_select);
 
         // Create text input for user to enter URL
         //
         let jigsaw_input = document.createElement('input');
         jigsaw_input.setAttribute('id', 'jigsaw_url');
+        jigsaw_input.setAttribute('class', 'jigsaw_control_item');
+        jigsaw_input.setAttribute('title', 'Enter URL of Image');
         jigsaw_input.setAttribute('type', 'text');
         jigsaw_input.setAttribute('size', '100');
         jigsaw_input.value = thisURL;
-        jigsaw_base.appendChild(jigsaw_input);
+        jigsaw_controls.appendChild(jigsaw_input);
 
         // Create button to enter/submit
         let jigsaw_submit = document.createElement('input');
         jigsaw_submit.setAttribute('id', 'jigsaw_submit');
+        jigsaw_submit.setAttribute('class', 'jigsaw_control_item');
+        jigsaw_submit.setAttribute('title', 'Load Image URL and Create JigSaw Puzzle');
         jigsaw_submit.setAttribute('type', 'submit');
         jigsaw_submit.setAttribute('value', 'Load Image');
         jigsaw_submit.addEventListener('click', JigSaw.init);
-        jigsaw_base.appendChild(jigsaw_submit);
+        jigsaw_controls.appendChild(jigsaw_submit);
+
+        // Create button to toggle preview image visibility
+        let jigsaw_toggle_preview = document.createElement('input');
+        jigsaw_toggle_preview.setAttribute('id', 'jigsaw_toggle_preview');
+        jigsaw_toggle_preview.setAttribute('class', 'jigsaw_control_item');
+        jigsaw_toggle_preview.setAttribute('title', 'Show/Hide JigSaw Image Preview');
+        jigsaw_toggle_preview.setAttribute('type', 'submit');
+        jigsaw_toggle_preview.setAttribute('value', 'Toggle Preview Image');
+        jigsaw_toggle_preview.addEventListener('click', JigSaw.toggle_preview_image);
+        jigsaw_controls.appendChild(jigsaw_toggle_preview);
 
         console.log("Created basic elements. Now initializing the JigSaw puzzle");
     }
