@@ -30,20 +30,22 @@ function loadJigSaw(tabId, thisURL) {
     let success = true;
 
     browser.tabs.insertCSS(tabId, { matchAboutBlank: false, file: "/css/jigsaw.css", runAt: "document_end"}, function() {
-        browser.tabs.executeScript(tabId, { matchAboutBlank: false, file: "/content_scripts/jigsaw.js", runAt: "document_end"}, function() {
-            let onSendMessage = function(response) {
-                if (browser.runtime.lastError) {
-                    console.log(browser.runtime.lastError);
+        browser.tabs.executeScript(tabId, { matchAboutBlank: false, file: "/js-utils/timer/Timer.js", runAt: "document_end"}, function() {
+            browser.tabs.executeScript(tabId, { matchAboutBlank: false, file: "/content_scripts/jigsaw.js", runAt: "document_end"}, function() {
+                let onSendMessage = function(response) {
+                    if (browser.runtime.lastError) {
+                        console.log(browser.runtime.lastError);
+                    }
+                    else {
+                        console.log("Response From Content Script: " + response.response);
+                    }
                 }
-                else {
-                    console.log("Response From Content Script: " + response.response);
-                }
-            }
 
-            let sendMessage = browser.tabs.sendMessage(tabId, 
-                                                       { jigsaw_action: "loadJigSaw", 
-                                                         jigsaw_url: thisURL }, 
-                                                       onSendMessage);
+                let sendMessage = browser.tabs.sendMessage(tabId,
+                                                           { jigsaw_action: "loadJigSaw",
+                                                             jigsaw_url: thisURL },
+                                                           onSendMessage);
+            });
         });
     });
 }

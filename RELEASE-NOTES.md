@@ -1,3 +1,11 @@
+## Version 1.4
+
+* Added timer to measure time taken to solve the puzzle
+
+* Timer can be paused/resumed
+
+------------------------------
+
 ## Version 1.3
 
 * Removed <all_urls> permission since activeTab permission

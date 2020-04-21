@@ -44,6 +44,15 @@ div.jigsaw_controls
     padding: 5px 5px 5px 5px;
 }
 
+div.jigsaw_control_item
+{
+    border: 2px solid black;
+    border-radius: 5px;
+    color:black;
+    backgroundi-color:#dfdfdf;
+    text-align:center;
+}
+
 input[type="text"] {
   font-size: 1em;
 }

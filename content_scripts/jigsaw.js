@@ -42,6 +42,7 @@ var JigSaw = {
     maxZIndex: 100,
     numBlink: 8,
     loading: false,
+    timer: null,
     base_div: null,
 
     init: function() {
@@ -86,6 +87,14 @@ var JigSaw = {
                                             JigSaw.calculateNeighbors();
                                             JigSaw.loading = false;
                                             message.parentNode.removeChild(message);
+                                            JigSaw.timer = new Timer();
+                                            JigSaw.timer.begin();
+                                            setInterval(function() {
+                                                let timer = document.getElementById('timer');
+                                                if (timer != null) {
+                                                    timer.textContent = JigSaw.timer.getString();
+                                                }
+                                            }, 1000);
                                         }, false);
                 
             if (img_url.value == "") {
@@ -312,6 +321,10 @@ var JigSaw = {
                 jigsaw_preview_image.style.visibility = 'hidden';
             }
         }
+    },
+
+    pause_resume_timer: function() {
+        JigSaw.timer.pause_resume();
     }
     
 };
@@ -651,6 +664,7 @@ function onMouseUp(e) {
         JigSaw.updateConnections(piece, xpos, ypos);
         let solved = JigSaw.checkSolved();
         if (solved) {
+            JigSaw.timer.stop();
             alert("Congratulations!  You have solved the puzzle.");
         }
     }
@@ -776,6 +790,15 @@ function loadJigSaw(jigsaw_default_size) {
         jigsaw_toggle_preview.setAttribute('value', 'Toggle Preview Image');
         jigsaw_toggle_preview.addEventListener('click', JigSaw.toggle_preview_image);
         jigsaw_controls.appendChild(jigsaw_toggle_preview);
+
+        // Create button to show timer
+        let jigsaw_timer = document.createElement('div');
+        jigsaw_timer.setAttribute('id', 'timer');
+        jigsaw_timer.setAttribute('class', 'jigsaw_control_item');
+        jigsaw_timer.setAttribute('title', 'Click to pause/resume solve timer');
+        jigsaw_timer.textContent = '00:00:00';
+        jigsaw_timer.addEventListener('click', JigSaw.pause_resume_timer);
+        jigsaw_controls.appendChild(jigsaw_timer);
 
         console.log("Created basic elements. Now initializing the JigSaw puzzle");
     }
