@@ -2,7 +2,7 @@
 /*
  *  JigSaw is html/javascript code that creates a jigsaw from a link.
  *  It assumes that the user has provided a valid link to an image file.
- *  Copyright (C) 2017-2020 Arun Kunchithapatham
+ *  Copyright (C) 2017-2024 Arun Kunchithapatham
  *
  *  This file is part of JigSaw.
  *
@@ -29,9 +29,9 @@ function loadJigSaw(tabId, thisURL) {
 
     let success = true;
 
-    browser.tabs.insertCSS(tabId, { matchAboutBlank: false, file: "/css/jigsaw.css", runAt: "document_end"}, function() {
-        browser.tabs.executeScript(tabId, { matchAboutBlank: false, file: "/js-utils/timer/Timer.js", runAt: "document_end"}, function() {
-            browser.tabs.executeScript(tabId, { matchAboutBlank: false, file: "/content_scripts/jigsaw.js", runAt: "document_end"}, function() {
+    browser.scripting.insertCSS( {target: {tabId: tabId}, files: ["/css/jigsaw.css"] }, function() {
+        browser.scripting.executeScript( {target: {tabId: tabId}, files: ["/js-utils/timer/Timer.js"] }, function() {
+            browser.scripting.executeScript( {target: {tabId: tabId}, files: ["/content_scripts/jigsaw.js"] }, function() {
                 let onSendMessage = function(response) {
                     if (browser.runtime.lastError) {
                         console.log(browser.runtime.lastError);
@@ -98,6 +98,8 @@ function handleInstalled(details) {
         let opt_value = options_list[opt_name];
         initializeOption(opt_name, opt_value);
     }
+
+    createContextMenus();
 }
 
 browser.runtime.onInstalled.addListener(handleInstalled);

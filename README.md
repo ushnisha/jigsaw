@@ -28,7 +28,7 @@ puzzle.
 ## License & Copyright:
 
 JigSaw is provided under AGPLv3 license.
-Copyright (C) 2017-2020 Arun Kunchithapatham
+Copyright (C) 2017-2024 Arun Kunchithapatham
 
 ## Feedback:
 

@@ -1,16 +1,16 @@
 {
 
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "__MSG_extensionName__",
-    "version": "1.4",
+    "version": "1.5",
 
     "description": "__MSG_extensionDescription__",
     "homepage_url": "https://www.github.com/ushnisha/jigsaw/",
 
-    "applications": {
+    "browser_specific_settings": {
         "gecko": {
           "id": "jigsaw@ushnisha.com",
-          "strict_min_version": "57.0"
+          "strict_min_version": "109.0"
         }
     },
 
@@ -23,12 +23,18 @@
     "permissions": [
         "activeTab",
         "storage",
+	"scripting",
         "contextMenus"
     ],
 
     "web_accessible_resources": [
-        "css/jigsaw.css",
-        "icons/*.png"
+        {
+            "resources": [
+                "css/jigsaw.css",
+                "icons/*.png"
+            ],
+            "matches": ["<all_urls>"]
+        }
     ],
 
     "options_ui": {

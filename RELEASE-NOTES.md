@@ -1,3 +1,13 @@
+## Version 1.5
+
+* Updated to support Manifest v3
+
+* Added a masking image to hide the puzzle when timer is paused
+
+* Updated copyright information
+
+------------------------------
+
 ## Version 1.4
 
 * Added timer to measure time taken to solve the puzzle

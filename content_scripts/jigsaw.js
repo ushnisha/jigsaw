@@ -2,7 +2,7 @@
 /*
  *  JigSaw is html/javascript code that creates a jigsaw from a link.
  *  It assumes that the user has provided a valid link to an image file.
- *  Copyright (C) 2015-2020 Arun Kunchithapatham
+ *  Copyright (C) 2015-2024 Arun Kunchithapatham
  *
  *  This file is part of JigSaw.
  *
@@ -43,6 +43,7 @@ var JigSaw = {
     numBlink: 8,
     loading: false,
     timer: null,
+    jigsaw_mask: null,
     base_div: null,
 
     init: function() {
@@ -115,9 +116,15 @@ var JigSaw = {
             canvas.parentNode.removeChild(canvas);
         }
         if (document.getElementById('jigsaw_previewImage') != undefined) {
-            previewImage = document.getElementById('jigsaw_previewImage');
+            let previewImage = document.getElementById('jigsaw_previewImage');
             previewImage.parentNode.removeChild(previewImage);
         }
+
+        if (document.getElementById('jigsaw_mask') != undefined) {
+            let jigsaw_mask = document.getElementById('jigsaw_mask');
+            jigsaw_mask.parentNode.removeChild(jigsaw_mask);
+        }
+
         JigSaw.pieces = new Array();
     },
     
@@ -177,6 +184,16 @@ var JigSaw = {
         if (!JigSaw.showPreviewImage) {
             previewImage.style.setProperty("visibility",'hidden');
         }
+
+        // Create the mask div to hide the puzzle when the timer is paused
+        let jigsaw_mask = document.createElement('div');
+        jigsaw_mask.setAttribute('id', 'jigsaw_mask');
+        jigsaw_mask.setAttribute('class', 'jigsaw_mask');
+        jigsaw_mask.style.setProperty('top', JigSaw.offset + "px");
+        jigsaw_mask.style.setProperty('height', (window.innerHeight - JigSaw.offset) + "px");
+        jigsaw_mask.style.setProperty('width', window.innerWidth + "px");
+        JigSaw.jigsaw_mask = jigsaw_mask;
+        JigSaw.base_div.appendChild(jigsaw_mask);
 
     },
     
@@ -325,6 +342,12 @@ var JigSaw = {
 
     pause_resume_timer: function() {
         JigSaw.timer.pause_resume();
+        if (JigSaw.timer.paused) {
+            JigSaw.jigsaw_mask.style.setProperty('visibility', 'visible');
+        }
+        else {
+            JigSaw.jigsaw_mask.style.setProperty('visibility', 'hidden');
+        }
     }
     
 };
@@ -606,7 +629,7 @@ Piece.prototype.flash = function(borderStyle) {
                 up = false;
             }
             else {
-                canvas.style.zIndex = 9999999;
+                canvas.style.zIndex = 9999998;
                 canvas.style.setProperty('border', borderStyle);
                 up = true; 
             }
